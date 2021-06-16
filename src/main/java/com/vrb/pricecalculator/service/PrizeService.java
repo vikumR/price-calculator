@@ -48,7 +48,7 @@ public class PrizeService {
 
     public double calculateTotal(List<Product> productsList) {
         double total = 0;
-        for (Product product: productsList) {
+        for (Product product : productsList) {
             total = calculateSubTotal(product.getId(), product.getUnits(), product.getCartons());
         }
         return total;

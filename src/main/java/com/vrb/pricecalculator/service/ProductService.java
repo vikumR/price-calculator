@@ -30,10 +30,6 @@ public class ProductService {
         return (List<Product>) productRepository.findAll();
     }
 
-    public Product findProductByName(String productName) {
-        return productRepository.findByProductName(productName);
-    }
-
     public Product findProductById(Long id) {
         return productRepository.findById(id).orElseThrow( () -> new ProductNotFoundException("Product by id " + id + " not found"));
     }
