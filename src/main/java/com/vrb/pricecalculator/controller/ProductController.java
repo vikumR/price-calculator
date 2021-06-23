@@ -3,6 +3,7 @@ package com.vrb.pricecalculator.controller;
 import com.vrb.pricecalculator.data.DataMap;
 import com.vrb.pricecalculator.data.DataModel;
 import com.vrb.pricecalculator.entity.Product;
+import com.vrb.pricecalculator.exception.ProductNotFoundException;
 import com.vrb.pricecalculator.service.PrizeService;
 import com.vrb.pricecalculator.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,11 +37,16 @@ public class ProductController {
 
     @GetMapping("/{id}")
     public ResponseEntity<List<DataModel>> getProductById(@PathVariable("id") Long id) {
-        Product product = productService.findProductById(id);
-//        List<DataModel> dataSource = new DataGenerator().getDataSourceByName(product.getProductName());
-        List<DataModel> dataSource = dataMap.getDataSource(product);
-        return new ResponseEntity<>(dataSource, HttpStatus.OK);
-//        return new ResponseEntity<>(product, HttpStatus.OK);
+        Product product;
+        try{
+            product = productService.findProductById(id);
+            List<DataModel> dataSource = dataMap.getDataSource(product);
+            return new ResponseEntity<>(dataSource, HttpStatus.OK);
+
+        }catch (ProductNotFoundException e) {
+            System.out.println(e.getCause().getMessage());
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @PostMapping("/total")
